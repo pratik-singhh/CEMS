@@ -71,6 +71,52 @@ app.post('/users/login', async (req, res) => {
   }
 })
 
+//EVENT POSTING ROUTE
+
+app.post('/events', authMiddleware, async (req, res) => {
+  try {
+    const { title, description, event_time } = req.body;
+    if (!title || !description || !event_time) {
+      return res.status(400).json({ message: 'Please provide title, description and event_time' });
+    }
+    const created_by = req.user.id;
+    const result = await pool.query('INSERT INTO events(title,description,event_time,created_by) VALUES($1,$2,$3,$4) RETURNING *;', [title, description, event_time, created_by]);
+    return res.status(201).json({
+      message: 'Event created successfully',
+      event: {
+        id: result.rows[0].id,
+        title: result.rows[0].title,
+        description: result.rows[0].description,
+        event_time: result.rows[0].event_time,
+        created_by: result.rows[0].created_by,
+      },
+    });
+  }
+
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+
+//retrieve all events
+app.get('/events', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM events ORDER BY event_time DESC');
+    return res.status(200).json({
+      message: 'Events retrieved successfully',
+      events: result.rows,
+    });
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+
+
 // Test route for auth middleware
 app.get('/me', authMiddleware, (req, res) => {
   res.json({ message: 'Test successful', user: req.user });
