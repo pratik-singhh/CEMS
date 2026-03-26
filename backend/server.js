@@ -6,12 +6,14 @@ dotenv.config();
 const jwt = require('jsonwebtoken');
 const app = express();
 const pool = require('./db');
+const cors = require('cors');
 
 app.use(express.json())
 const secret = process.env.JWT_SECRET;
 
 const PORT = 3000;
 
+app.use(cors());
 
 app.get('/', async (req, res) => {
   res.json({ Response: "I can see you" })
