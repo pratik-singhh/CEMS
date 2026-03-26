@@ -115,7 +115,56 @@ app.get('/events', async (req, res) => {
   }
 })
 
+//create regitration
+app.post('/events/:id/register', authMiddleware, async (req, res) => {
+  try {
+    const { id: event_id } = req.params;
+    const user_id = req.user.id;
+    const result = await pool.query('INSERT INTO registrations(user_id,event_id) VALUES ($1,$2) RETURNING *;', [user_id, event_id]);
+    return res.status(201).json({
+      message: 'Registration successful',
+      registration: {
+        id: result.rows[0].id,
+        user_id: result.rows[0].user_id,
+        event_id: result.rows[0].event_id,
+      },
+    });
 
+  } catch (error) {
+    console.error(error);
+    if (error.code === '23505') {
+      return res.status(400).json({ message: 'User already registered' });
+    }
+    if (error.code === '23503') {
+      return res.status(404).json({ message: 'Event does not exist' });
+    }
+    return res.status(500).json({ message: 'Internal Server Error' });
+
+  }
+})
+
+//GET registrations
+
+app.get('/my-events', authMiddleware, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const result = await pool.query('SELECT events.title, events.event_time,events.description FROM events JOIN registrations ON events.id=registrations.event_id WHERE registrations.user_id=$1;',
+      [user_id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(200).json({ message: 'No registrations found' });
+    }
+    return res.status(200).json({
+      message: 'Registrations retrieved successfully',
+      registrations: result.rows,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+
+  }
+})
 
 // Test route for auth middleware
 app.get('/me', authMiddleware, (req, res) => {
