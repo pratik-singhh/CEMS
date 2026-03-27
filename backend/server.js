@@ -14,7 +14,9 @@ const secret = process.env.JWT_SECRET;
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: ['https://cems-six.vercel.app/']
+  origin: ['https://cems-six.vercel.app']
+  , methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
 app.get('/', async (req, res) => {
