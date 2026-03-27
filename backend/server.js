@@ -13,7 +13,9 @@ const secret = process.env.JWT_SECRET;
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://vercel.com/pratik-singhhs-projects/cems/6UHoYjB99C8uhCZkgGYAiRFfgBSS']
+}));
 
 app.get('/', async (req, res) => {
   res.json({ Response: "I can see you" })
