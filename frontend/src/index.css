@@ -1,1 +1,119 @@
 @import 'tailwindcss';
+
+@theme {
+  /* ── Primary ── */
+  --color-primary: #000666;
+  --color-primary-container: #1a237e;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #8690ee;
+  --color-primary-fixed: #e0e0ff;
+  --color-primary-fixed-dim: #bdc2ff;
+  --color-on-primary-fixed: #000767;
+  --color-on-primary-fixed-variant: #343d96;
+  --color-inverse-primary: #bdc2ff;
+
+  /* ── Secondary ── */
+  --color-secondary: #9f4200;
+  --color-secondary-container: #fd6c00;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #562000;
+  --color-secondary-fixed: #ffdbcb;
+  --color-secondary-fixed-dim: #ffb692;
+  --color-on-secondary-fixed: #341100;
+  --color-on-secondary-fixed-variant: #7a3000;
+
+  /* ── Tertiary ── */
+  --color-tertiary: #00201a;
+  --color-tertiary-container: #00372e;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #00ab93;
+  --color-tertiary-fixed: #68fadd;
+  --color-tertiary-fixed-dim: #44ddc1;
+  --color-on-tertiary-fixed: #00201a;
+  --color-on-tertiary-fixed-variant: #005145;
+
+  /* ── Error ── */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* ── Surface ── */
+  --color-surface: #fbf8ff;
+  --color-surface-dim: #dbd9e1;
+  --color-surface-bright: #fbf8ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f2fb;
+  --color-surface-container: #efecf5;
+  --color-surface-container-high: #eae7ef;
+  --color-surface-container-highest: #e4e1ea;
+  --color-surface-variant: #e4e1ea;
+  --color-surface-tint: #4c56af;
+  --color-on-surface: #1b1b21;
+  --color-on-surface-variant: #454652;
+  --color-inverse-surface: #303036;
+  --color-inverse-on-surface: #f2eff8;
+
+  /* ── Outline ── */
+  --color-outline: #767683;
+  --color-outline-variant: #c6c5d4;
+
+  /* ── Background ── */
+  --color-background: #fbf8ff;
+  --color-on-background: #1b1b21;
+
+  /* ── Font Families ── */
+  --font-headline: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-label: 'Inter', sans-serif;
+}
+
+/* ── Base Styles ── */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #fbf8ff;
+  color: #1b1b21;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-primary-fixed);
+  color: var(--color-on-primary-fixed);
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Custom Scrollbar ── */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c6c5d4;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+/* ── Glass overlay for modals ── */
+.glass-overlay {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 6, 102, 0.2);
+}
+
+/* ── Hide scroll bar ── */
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
