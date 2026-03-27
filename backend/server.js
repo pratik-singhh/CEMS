@@ -11,7 +11,7 @@ const cors = require('cors');
 app.use(express.json())
 const secret = process.env.JWT_SECRET;
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 

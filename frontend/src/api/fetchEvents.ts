@@ -68,3 +68,36 @@ export async function registerEvent(event_id: number) {
   const data = await response.json();
   return data;
 }
+
+export async function createEvent(title: string, description: string, event_time: string) {
+  const url = 'http://localhost:3000/events';
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found');
+  }
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + token
+    },
+    body: JSON.stringify({
+      title, description, event_time
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

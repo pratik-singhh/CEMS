@@ -2,6 +2,7 @@ import Events from './pages/Events';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import MyEvents from './pages/MyEvents';
+import CreateEvent from './pages/CreateEvent';
 function App() {
 
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path='/' element={<Events />} />
         <Route path='/login' element={<Login />} />
         <Route path='/my-events' element={<MyEvents />} />
+        <Route path='/create-event' element={<CreateEvent />} />
       </Routes>
     </BrowserRouter>
 
