@@ -1,6 +1,6 @@
 // Fetch all events
 export async function fetchEvents() {
-  const url = '/api/events';
+  const url = `${import.meta.env.VITE_API_URL}/events`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -16,7 +16,7 @@ export async function fetchEvents() {
 
 // Fetch token for login
 export async function getToken(email: string, password: string) {
-  const url = '/api/users/login';
+  const url = `${import.meta.env.VITE_API_URL}/users/login`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -33,7 +33,7 @@ export async function getToken(email: string, password: string) {
 
 // Fetch events for specific user
 export async function fetchMyEvents() {
-  const url = '/api/my-events';
+  const url = `${import.meta.env.VITE_API_URL}/my-events`;
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -54,7 +54,7 @@ export async function fetchMyEvents() {
 
 // Register event for specific user
 export async function registerEvent(event_id: number) {
-  const url = `/api/events/${event_id}/register`;
+  const url = `${import.meta.env.VITE_API_URL}/events/${event_id}/register`;
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -75,7 +75,7 @@ export async function registerEvent(event_id: number) {
 
 // Create a new event
 export async function createEvent(title: string, description: string, event_time: string) {
-  const url = '/api/events';
+  const url = `${import.meta.env.VITE_API_URL}/events`;
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
