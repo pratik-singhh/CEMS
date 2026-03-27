@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
 
   const navigate = useNavigate();
-  let loggedIn = false;
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const tryLogin = async () => {
     const token = await getToken(email, password);
     if (token) {
-      loggedIn = (token) ? true : false;
       localStorage.setItem('token', token);
       navigate('/');
     }
