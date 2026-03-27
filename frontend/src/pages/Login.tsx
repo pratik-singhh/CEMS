@@ -2,23 +2,18 @@ import { useState } from 'react';
 import { getToken } from '../api/fetchEvents';
 import { useNavigate } from 'react-router-dom';
 
-type Props = {
-  loggedIn: boolean,
-  setLoggedIn: (loggedIn: boolean) => void
-}
-function Login(props: Props) {
-  const { loggedIn, setLoggedIn } = props;
+function Login() {
 
   const navigate = useNavigate();
+  let loggedIn = false;
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const tryLogin = async () => {
     const token = await getToken(email, password);
-    console.log(token);
     if (token) {
-      setLoggedIn(true);
+      loggedIn = (token) ? true : false;
       localStorage.setItem('token', token);
-      navigate('/my-events');
+      navigate('/');
     }
     else {
       navigate('/login');

@@ -35,6 +35,9 @@ export async function fetchMyEvents() {
 
   const url = 'http://localhost:3000/my-events';
   const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found');
+  }
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -43,8 +46,25 @@ export async function fetchMyEvents() {
     }
   });
   const data = await response.json();
-  console.log(data.registrations);
 
   return data.registrations;
 
 };
+
+//register event for specific user.
+export async function registerEvent(event_id: number) {
+  const url = `http://localhost:3000/events/${event_id}/register`;
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found');
+  }
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + token
+    }
+  })
+  const data = await response.json();
+  return data;
+}

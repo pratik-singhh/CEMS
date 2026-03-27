@@ -12,9 +12,9 @@ function MyEvents() {
 
         const data: Event[] = await fetchMyEvents();
         setEvents(data);
-        console.log(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        navigate('/login');
 
 
       }
@@ -24,14 +24,21 @@ function MyEvents() {
   }, [])
   return (
     <div>
-      {events.map((item: Event, index) => (
-        <div key={item.id}>
-          <h1>{item.title}</h1>
-          <p>{item.event_time}</p>
-          <p>{item.description}</p>
-        </div>))}
 
+      <div>
+        {events.map((item: Event) => (
+
+          <div key={item.id} className='items-center justify-center border-2 rounded-lg m-2 p-2'>
+            <h1>{item.title}</h1>
+            <p>{item.event_time}</p>
+            <p>{item.description}</p>
+          </div>))}
+
+      </div>
+
+      <button className='p-2 border rounded-lg m-2 ' onClick={() => { navigate('/') }}>All Events</button>
     </div>
+
   )
 }
 
