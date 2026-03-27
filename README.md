@@ -42,11 +42,3 @@ A robust full-stack web application designed to streamline campus engagement. CE
 - **PostgreSQL (Neon):** Relational database used to maintain strict data integrity (ACID compliance) for user-event relationships.
 
 ---
-
-## 🧩 System Architecture
-
-```mermaid
-graph TD
-    A[React Frontend] -->|REST API Calls| B[Express Backend]
-    B -->|JWT Auth Middleware| C[Business Logic]
-    C -->|SQL Queries| D[(PostgreSQL Database)]
