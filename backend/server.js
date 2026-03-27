@@ -150,7 +150,7 @@ app.post('/events/:id/register', authMiddleware, async (req, res) => {
 app.get('/my-events', authMiddleware, async (req, res) => {
   try {
     const user_id = req.user.id;
-    const result = await pool.query('SELECT events.title, events.event_time,events.description FROM events JOIN registrations ON events.id=registrations.event_id WHERE registrations.user_id=$1;',
+    const result = await pool.query('SELECT * FROM events JOIN registrations ON events.id=registrations.event_id WHERE registrations.user_id=$1;',
       [user_id]
     );
     if (result.rows.length === 0) {
