@@ -4,10 +4,10 @@ function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-12">
         <div className="max-w-md">
           <span className="text-2xl font-black tracking-tighter text-primary mb-6 block font-headline">
-            EVENTS.SSIPMT
+            EVENTS.HUB
           </span>
           <p className="text-on-surface-variant text-sm leading-relaxed">
-            The central hub for all academic, technical, and cultural activities at SSIPMT Campus. Stay connected, stay inspired.
+            The central hub for all academic, technical, and cultural activities at Campus. Stay connected, stay inspired.
           </p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 lg:gap-20 w-full lg:w-auto">
@@ -46,7 +46,7 @@ function Footer() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-outline-variant/10 text-center text-sm text-slate-500 font-medium tracking-wide">
-        © 2026 SSIPMT Event Portal. All rights reserved. Built for Excellence.
+        © 2026 CAMPUS Event Portal. All rights reserved. Built for Excellence.
       </div>
     </footer>
   );

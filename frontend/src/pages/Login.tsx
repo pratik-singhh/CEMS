@@ -56,7 +56,7 @@ function Login() {
         <div className="w-full max-w-md">
           {/* Mobile Brand */}
           <div className="lg:hidden mb-10 text-center">
-            <h1 className="text-2xl font-black text-primary tracking-tighter font-headline">EVENTS.SSIPMT</h1>
+            <h1 className="text-2xl font-black text-primary tracking-tighter font-headline">EVENTS.HUB</h1>
             <p className="text-on-surface-variant text-sm mt-1">Campus Event Management Portal</p>
           </div>
 
@@ -82,7 +82,7 @@ function Login() {
                     className="w-full bg-surface-container border border-outline-variant/30 rounded-xl pl-12 pr-4 py-3.5 text-on-surface placeholder:text-outline/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@ssipmt.edu"
+                    placeholder="you@mail.edu"
                     type="email"
                   />
                 </div>

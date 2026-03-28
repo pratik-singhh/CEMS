@@ -19,18 +19,17 @@ function Navbar() {
           className="text-xl md:text-2xl font-black text-primary tracking-tighter font-headline cursor-pointer"
           onClick={() => navigate('/')}
         >
-          EVENTS.SSIPMT
+          EVENTS.HUB
         </h1>
       </div>
 
       <nav className="hidden md:flex items-center gap-8">
         <button
           onClick={() => navigate('/')}
-          className={`font-headline py-1 text-sm tracking-wide transition-colors ${
-            isActive('/')
+          className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/')
               ? 'text-primary border-b-2 border-primary font-bold'
               : 'text-slate-500 font-semibold hover:text-primary'
-          }`}
+            }`}
         >
           Home
         </button>
@@ -38,21 +37,19 @@ function Navbar() {
           <>
             <button
               onClick={() => navigate('/my-events')}
-              className={`font-headline py-1 text-sm tracking-wide transition-colors ${
-                isActive('/my-events')
+              className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/my-events')
                   ? 'text-primary border-b-2 border-primary font-bold'
                   : 'text-slate-500 font-semibold hover:text-primary'
-              }`}
+                }`}
             >
               My Events
             </button>
             <button
               onClick={() => navigate('/create-event')}
-              className={`font-headline py-1 text-sm tracking-wide transition-colors ${
-                isActive('/create-event')
+              className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/create-event')
                   ? 'text-primary border-b-2 border-primary font-bold'
                   : 'text-slate-500 font-semibold hover:text-primary'
-              }`}
+                }`}
             >
               Create Event
             </button>

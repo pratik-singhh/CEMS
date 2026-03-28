@@ -58,7 +58,7 @@ function MyEvents() {
             My Events
           </h2>
           <p className="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
-            Manage your event registrations. Your digital gateway to the vibrant campus life at SSIPMT.
+            Manage your event registrations. Your digital gateway to the vibrant campus life.
           </p>
         </header>
 
