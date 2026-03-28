@@ -56,19 +56,28 @@ function Navbar() {
               My Events
             </button>
             {isAdmin && (
+              <>
+                <button
+                  onClick={() => navigate('/admin')}
+                  className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/admin')
+                    ? 'text-primary border-b-2 border-primary font-bold'
+                    : 'text-slate-500 font-semibold hover:text-primary'
+                    }`}
+                >
+                  Dashboard
+                </button>
 
-
-              <button
-                onClick={() => navigate('/create-event')}
-                className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/create-event')
-                  ? 'text-primary border-b-2 border-primary font-bold'
-                  : 'text-slate-500 font-semibold hover:text-primary'
-                  }`}
-              >
-                Create Event
-              </button>
-            )
-            }
+                <button
+                  onClick={() => navigate('/create-event')}
+                  className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/create-event')
+                    ? 'text-primary border-b-2 border-primary font-bold'
+                    : 'text-slate-500 font-semibold hover:text-primary'
+                    }`}
+                >
+                  Create Event
+                </button>
+              </>
+            )}
           </>
         )}
       </nav>
