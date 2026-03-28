@@ -4,6 +4,7 @@ import type { Event } from '../types/event';
 import { fetchEvents, registerEvent, fetchMyEvents } from '../api/fetchEvents';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { deleteEvent } from '../api/fetchEvents';
 
 function Events() {
   const formatDate = (dateString: string) => {
@@ -40,6 +41,7 @@ function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [registeredIds, setRegisteredIds] = useState<Set<number>>(new Set());
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem('token');
@@ -51,6 +53,11 @@ function Events() {
 
         // Fetch registered events if logged in
         if (token) {
+          const payload = JSON.parse(atob(token?.split('.')[1]));
+          const { role } = payload !== null ? payload : { role: 'student' };
+          if (role === 'admin') {
+            setIsAdmin(true);
+          }
           try {
             const myEvents = await fetchMyEvents();
             if (myEvents) {
@@ -70,6 +77,27 @@ function Events() {
     }
     tryFetch();
   }, []);
+
+
+  const tryDelete = async (event_id: number) => {
+    try {
+      const response = await deleteEvent(event_id);
+      setError(false);
+      setMessage('Event Deleted Successfully');
+      const filteredEvents = events.filter((item) => item.id !== event_id);
+      setEvents(filteredEvents);
+      console.log(response);
+
+
+
+
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      setMessage(error instanceof Error ? error.message : 'Failed to delete');
+
+    }
+  };
 
   const tryRegister = async (event_id: number) => {
     try {
@@ -125,11 +153,10 @@ function Events() {
       {/* Toast message */}
       {message && (
         <div className="max-w-7xl mx-auto w-full px-8 mt-6">
-          <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-sm shadow-lg ${
-            iserror
-              ? 'bg-error-container text-on-error-container'
-              : 'bg-tertiary-fixed text-on-tertiary-fixed'
-          }`}>
+          <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-sm shadow-lg ${iserror
+            ? 'bg-error-container text-on-error-container'
+            : 'bg-tertiary-fixed text-on-tertiary-fixed'
+            }`}>
             <span className="material-symbols-outlined text-lg">
               {iserror ? 'error' : 'check_circle'}
             </span>
@@ -209,6 +236,32 @@ function Events() {
                       <div className="mt-auto flex items-center gap-2 text-outline text-sm">
                         <span className="material-symbols-outlined text-sm">calendar_today</span>
                         {formatDate(item.event_time)}
+                      </div>
+                    )}
+                    {isAdmin && (
+                      <div className="mt-4 pt-4 border-t border-outline-variant/10 flex justify-between items-center">
+                        <span className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-1">
+                          <span className="material-symbols-outlined text-xs">admin_panel_settings</span>
+                          Admin Controls
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => { navigate(`/edit-event/${item.id}`); }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary/10 text-secondary hover:bg-secondary hover:text-on-secondary transition-all duration-300 font-bold text-xs"
+                            title="Edit Event"
+                          >
+                            <span className="material-symbols-outlined text-sm">edit</span>
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => tryDelete(item.id)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-error/10 text-error hover:bg-error hover:text-on-error transition-all duration-300 font-bold text-xs"
+                            title="Delete Event"
+                          >
+                            <span className="material-symbols-outlined text-sm">delete</span>
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

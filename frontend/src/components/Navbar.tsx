@@ -6,6 +6,17 @@ function Navbar() {
   const isLoggedIn = !!localStorage.getItem('token');
 
   const isActive = (path: string) => location.pathname === path;
+  const token = localStorage.getItem('token');
+  // console.log(token);
+
+  const payload = JSON.parse(atob(token?.split('.')[1]!));
+  const { role } = payload !== null ? payload : { role: 'student' };
+  const isAdmin = role === 'admin';
+  // console.log(payload);
+  // console.log(token);
+
+
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -27,8 +38,8 @@ function Navbar() {
         <button
           onClick={() => navigate('/')}
           className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/')
-              ? 'text-primary border-b-2 border-primary font-bold'
-              : 'text-slate-500 font-semibold hover:text-primary'
+            ? 'text-primary border-b-2 border-primary font-bold'
+            : 'text-slate-500 font-semibold hover:text-primary'
             }`}
         >
           Home
@@ -38,21 +49,26 @@ function Navbar() {
             <button
               onClick={() => navigate('/my-events')}
               className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/my-events')
-                  ? 'text-primary border-b-2 border-primary font-bold'
-                  : 'text-slate-500 font-semibold hover:text-primary'
+                ? 'text-primary border-b-2 border-primary font-bold'
+                : 'text-slate-500 font-semibold hover:text-primary'
                 }`}
             >
               My Events
             </button>
-            <button
-              onClick={() => navigate('/create-event')}
-              className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/create-event')
+            {isAdmin && (
+
+
+              <button
+                onClick={() => navigate('/create-event')}
+                className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/create-event')
                   ? 'text-primary border-b-2 border-primary font-bold'
                   : 'text-slate-500 font-semibold hover:text-primary'
-                }`}
-            >
-              Create Event
-            </button>
+                  }`}
+              >
+                Create Event
+              </button>
+            )
+            }
           </>
         )}
       </nav>

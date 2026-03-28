@@ -6,4 +6,5 @@ export type Event = {
   event_time: string,
   created_by: number,
   created_at: string
+  registrations: number
 }

@@ -1,10 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { createEvent } from '../api/fetchEvents';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { updateEvent, getOneEvent } from '../api/fetchEvents';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import type { Event } from '../types/event';
+function EditEvent() {
 
-function CreateEvent() {
+  const params = useParams();
+  const id = Number(params.id);
+  const [event, setEvent] = useState<Event>(
+
+  );
+
+
+
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -24,17 +33,36 @@ function CreateEvent() {
     if (role !== 'admin') {
       navigate('/');
     }
+
+    async function tryFetch() {
+      try {
+        const data = await getOneEvent(id);
+        setEvent(data.event);
+
+
+        setTitle(data.event.title);
+        setDescription(data.event.description);
+        setEventTime(new Date(data.event.event_time).toISOString().slice(0, 16));
+
+
+      } catch (error) {
+        console.error(error);
+
+      }
+    }
+    tryFetch();
+
   }, [navigate]);
 
-  const tryCreate = async (title: string, description: string, event_time: string) => {
+  const tryEdit = async (title: string, description: string, event_time: string) => {
     try {
       setLoading(true);
       const isoDate = new Date(event_time).toISOString();
-      const result = await createEvent(title, description, isoDate);
+      const result = await updateEvent(title, description, isoDate, id);
       setTitle('');
       setDescription('');
       setEventTime('');
-      setMessage('Event Created Successfully');
+      setMessage('Event Edited Successfully');
       setIsError(false);
       console.log(result);
       navigate('/');
@@ -61,18 +89,18 @@ function CreateEvent() {
             Back to Home
           </Link>
           <h2 className="font-headline text-4xl md:text-5xl font-extrabold text-primary tracking-tight mb-3">
-            Create Event
+            Edit Event
           </h2>
           <p className="text-on-surface-variant text-lg leading-relaxed">
-            Fill in the details below to create a new campus event.
+            Fill in the details below to edit an event.
           </p>
         </header>
 
         {/* Toast */}
         {message && (
           <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-sm shadow-lg mb-8 ${isError
-              ? 'bg-error-container text-on-error-container'
-              : 'bg-tertiary-fixed text-on-tertiary-fixed'
+            ? 'bg-error-container text-on-error-container'
+            : 'bg-tertiary-fixed text-on-tertiary-fixed'
             }`}>
             <span className="material-symbols-outlined text-lg">
               {isError ? 'error' : 'check_circle'}
@@ -133,7 +161,7 @@ function CreateEvent() {
 
             {/* Submit */}
             <button
-              onClick={() => tryCreate(title, description, event_time)}
+              onClick={() => tryEdit(title, description, event_time)}
               disabled={loading || !title || !description || !event_time}
               className="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-4 rounded-xl font-bold text-base tracking-tight shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
             >
@@ -145,7 +173,7 @@ function CreateEvent() {
               ) : (
                 <>
                   <span className="material-symbols-outlined text-lg">add_circle</span>
-                  Create Event
+                  Edit Event
                 </>
               )}
             </button>
@@ -158,4 +186,5 @@ function CreateEvent() {
   );
 }
 
-export default CreateEvent;
+
+export default EditEvent

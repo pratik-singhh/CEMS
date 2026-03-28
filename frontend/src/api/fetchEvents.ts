@@ -94,3 +94,88 @@ export async function createEvent(title: string, description: string, event_time
   }
   return data;
 }
+
+export async function deleteEvent(id: number) {
+  try {
+
+    const url = `${import.meta.env.VITE_API_URL}/events/${id}`;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": 'Bearer ' + token
+      }
+    })
+    if (!response.ok) {
+      throw new Error('Failed to delete event');
+
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+
+
+
+  }
+
+}
+
+export async function getOneEvent(id: number) {
+  try {
+
+    const url = `${import.meta.env.VITE_API_URL}/events/${id}`;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch event');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+
+  }
+}
+
+export async function updateEvent(title: string, description: string, event_time: string, id: number) {
+  try {
+
+    const url = `${import.meta.env.VITE_API_URL}/events/${id}`;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ title, description, event_time })
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to update event');
+    }
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+
+  }
+}
+

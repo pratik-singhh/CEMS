@@ -64,7 +64,8 @@ app.post('/users/login', async (req, res) => {
     if (!await bcrypt.compare(password, user.rows[0].password)) {
       return res.status(401).json({ message: 'Incorrect password' });
     }
-    const token = jwt.sign({ email: user.rows[0].email, id: user.rows[0].id }, secret, { expiresIn: '1h' });
+    console.log(user.rows[0]);
+    const token = jwt.sign({ email: user.rows[0].email, id: user.rows[0].id, role: user.rows[0].role }, secret, { expiresIn: '1h' });
     return res.status(200).json({ message: 'Login successful', token: token });
 
 
@@ -82,6 +83,10 @@ app.post('/users/login', async (req, res) => {
 app.post('/events', authMiddleware, async (req, res) => {
   try {
     const { title, description, event_time } = req.body;
+    const { role } = req.user;
+    if (role !== 'admin') {
+      return res.status(403).json({ message: 'You are not authorized to create an event' });
+    }
     if (!title || !description || !event_time) {
       return res.status(400).json({ message: 'Please provide title, description and event_time' });
     }
@@ -104,15 +109,95 @@ app.post('/events', authMiddleware, async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 })
+// Event deletion.
+app.delete('/events/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.user;
+    if (role !== 'admin') {
+      return res.status(403).json({ message: 'You are not authorized to delete an event' });
+    }
+    const result = await pool.query('DELETE FROM events WHERE id=$1 RETURNING *;', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Event does not exist' });
+    }
+    return res.status(200).json({
+      message: 'Event deleted successfully',
+      event: {
+        id: result.rows[0].id,
+      },
+    });
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+
+//Edit Event.
+app.put('/events/:id', authMiddleware, async (req, res) => {
+  try {
+    const { role } = req.user;
+    if (role !== 'admin') {
+      return res.status(403).json({ message: 'You are not authorized to edit an event' });
+    }
+    const { id } = req.params;
+    const { title, description, event_time } = req.body;
+    const result = await pool.query('UPDATE events SET title=$1,description=$2,event_time=$3 WHERE id=$4 RETURNING *;', [title, description, event_time, id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Event does not exist' });
+    }
+    return res.status(200).json({
+      message: 'Event updated successfully',
+      event: {
+        id: result.rows[0].id,
+        title: result.rows[0].title,
+        description: result.rows[0].description,
+        event_time: result.rows[0].event_time,
+        created_by: result.rows[0].created_by,
+      },
+    });
+
+  } catch (error) {
+
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
 
 
 //retrieve all events
 app.get('/events', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM events ORDER BY event_time DESC');
+    const registrations = await pool.query('SELECT events.*,COUNT(registrations.id) as registrations FROM events LEFT JOIN registrations ON events.id=registrations.event_id GROUP BY events.id');
     return res.status(200).json({
       message: 'Events retrieved successfully',
-      events: result.rows,
+      events: registrations.rows,
+    });
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+//Get event by id
+app.get('/events/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query('SELECT * FROM events WHERE id=$1 LIMIT 1;', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Event does not exist' });
+    }
+    return res.status(200).json({
+      message: 'Event retrieved successfully',
+      event: {
+        id: result.rows[0].id,
+        title: result.rows[0].title,
+        description: result.rows[0].description,
+        event_time: result.rows[0].event_time,
+        created_by: result.rows[0].created_by,
+      },
     });
   }
   catch (error) {
