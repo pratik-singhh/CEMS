@@ -3,14 +3,10 @@ import { updateEvent, getOneEvent } from '../api/fetchEvents';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import type { Event } from '../types/event';
 function EditEvent() {
 
   const params = useParams();
   const id = Number(params.id);
-  const [event, setEvent] = useState<Event>(
-
-  );
 
 
 
@@ -37,7 +33,6 @@ function EditEvent() {
     async function tryFetch() {
       try {
         const data = await getOneEvent(id);
-        setEvent(data.event);
 
 
         setTitle(data.event.title);
