@@ -9,7 +9,7 @@ function Navbar() {
   const token = localStorage.getItem('token');
   // console.log(token);
 
-  const payload = JSON.parse(atob(token?.split('.')[1]!));
+  const payload = token && JSON.parse(atob(token.split('.')[1]!));
   const { role } = payload !== null ? payload : { role: 'student' };
   const isAdmin = role === 'admin';
   // console.log(payload);

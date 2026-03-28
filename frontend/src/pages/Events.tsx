@@ -53,7 +53,7 @@ function Events() {
 
         // Fetch registered events if logged in
         if (token) {
-          const payload = JSON.parse(atob(token?.split('.')[1]));
+          const payload = token && JSON.parse(atob(token.split('.')[1]));
           const { role } = payload !== null ? payload : { role: 'student' };
           if (role === 'admin') {
             setIsAdmin(true);
