@@ -1,4 +1,12 @@
+
 function Footer() {
+  const token = localStorage.getItem('token');
+  // console.log(token);
+
+  const payload = token && JSON.parse(atob(token.split('.')[1]!));
+  const { role } = payload !== null ? payload : { role: 'student' };
+  const isAdmin = role === 'admin';
+
   return (
     <footer className="bg-surface-container-low py-16 px-8 mt-auto border-t border-outline-variant/15">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-12">
@@ -18,7 +26,9 @@ function Footer() {
             <ul className="space-y-4 text-on-surface-variant text-sm">
               <li><a className="hover:text-primary transition-colors" href="/">Home</a></li>
               <li><a className="hover:text-primary transition-colors" href="/">Upcoming Events</a></li>
-              <li><a className="hover:text-primary transition-colors" href="/my-events">My Events</a></li>
+              {(!isAdmin) && (
+                <li><a className="hover:text-primary transition-colors" href="/my-events">My Events</a></li>
+              )}
             </ul>
           </div>
           <div>

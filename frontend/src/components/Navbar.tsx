@@ -46,15 +46,16 @@ function Navbar() {
         </button>
         {isLoggedIn && (
           <>
-            <button
-              onClick={() => navigate('/my-events')}
-              className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/my-events')
-                ? 'text-primary border-b-2 border-primary font-bold'
-                : 'text-slate-500 font-semibold hover:text-primary'
-                }`}
-            >
-              My Events
-            </button>
+            {(!isAdmin && isLoggedIn) && (
+              <button
+                onClick={() => navigate('/my-events')}
+                className={`font-headline py-1 text-sm tracking-wide transition-colors ${isActive('/my-events')
+                  ? 'text-primary border-b-2 border-primary font-bold'
+                  : 'text-slate-500 font-semibold hover:text-primary'
+                  }`}
+              >
+                My Events
+              </button>)}
             {isAdmin && (
               <>
                 <button

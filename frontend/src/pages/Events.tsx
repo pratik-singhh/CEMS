@@ -218,7 +218,7 @@ function Events() {
                     <h3 className="text-xl md:text-2xl font-bold text-primary mb-3 leading-tight font-headline">{item.title}</h3>
                     <p className="text-on-surface-variant text-sm mb-6 line-clamp-2 leading-relaxed">{item.description}</p>
 
-                    {isLoggedIn ? (
+                    {(isLoggedIn && !isAdmin) ? (
                       registeredIds.has(item.id) ? (
                         <div className="mt-auto w-full bg-tertiary-fixed text-on-tertiary-fixed py-3.5 rounded-xl font-bold tracking-tight text-center flex items-center justify-center gap-2">
                           <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
